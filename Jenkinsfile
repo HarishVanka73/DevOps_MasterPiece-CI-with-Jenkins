@@ -4,10 +4,10 @@ pipeline {
     environment {
         NAME = "spring-app"
         VERSION = "${env.BUILD_ID}"
-        GIT_COMMIT = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
+        // GIT_COMMIT = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
         IMAGE_REPO = "praveensirvi"
-        GIT_REPO_NAME = "DevOps_MasterPiece-CD-with-argocd"
-        GIT_USER_NAME = "praveensirvi1212"
+       // GIT_REPO_NAME = "DevOps_MasterPiece-CD-with-argocd"
+        // GIT_USER_NAME = "praveensirvi1212"
        
     }
 
@@ -17,7 +17,7 @@ pipeline {
     stages {
         stage('Checkout git') {
             steps {
-              git branch: 'main', url:'https://github.com/praveensirvi1212/DevOps_MasterPiece-CI-with-Jenkins.git'
+              git branch: 'main', url:'https://github.com/Harishvanka73/DevOps_MasterPiece-CI-with-Jenkins.git'
             }
         }
         
@@ -77,14 +77,14 @@ pipeline {
         stage('Docker  Build') {
             steps {
                
-      	         sh 'docker build -t ${IMAGE_REPO}/${NAME}:${VERSION}-${GIT_COMMIT} .'
+      	         sh 'docker build -t ${IMAGE_REPO}/${NAME}:${VERSION} .'
                 
             }
         }
 
         stage('Docker Image Scan') {
             steps {
-      	        sh ' trivy image --format template --template "@/usr/local/share/trivy/templates/html.tpl" -o report.html ${IMAGE_REPO}/${NAME}:${VERSION}-${GIT_COMMIT} '
+      	        sh ' trivy image --format template --template "@/usr/local/share/trivy/templates/html.tpl" -o report.html ${IMAGE_REPO}/${NAME}:${VERSION} '
             }
         }    
         
