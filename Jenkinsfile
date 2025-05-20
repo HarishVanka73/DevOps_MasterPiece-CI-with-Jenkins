@@ -10,6 +10,7 @@ pipeline {
         AWS_REGION = 'us-east-1'
         ECR_REPO_NAME = 'myapp'
         ECR_ACCOUNT_ID = '123456789012'
+        TARGET_REPO_JAR = 'my-local-repo'
        
     }
 
@@ -50,10 +51,6 @@ pipeline {
         }
         
         stage('Deploy to Artifactory') {
-            environment {
-                // Define the target repository in Artifactory
-                TARGET_REPO = 'my-local-repo'
-            }
             
             steps {
                 script {
@@ -88,7 +85,7 @@ pipeline {
                         "files": [
                             {
                                 "pattern": "${TARGET_REPO}/*.jar",
-                                "target": "downloaded/"
+                                "target": "target/"
                             }
                         ]
                     }"""
