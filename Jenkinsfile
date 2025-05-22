@@ -81,12 +81,10 @@ pipeline {
                          docker tag myapp:${VERSION} ${ecrUrl}:${VERSION}
                          docker push ${ecrUrl}:${VERSION}
                        """
-        }
-    }
-}
-}
-
-    
+               }
+            }
+       }
+  }
 }
 
 
