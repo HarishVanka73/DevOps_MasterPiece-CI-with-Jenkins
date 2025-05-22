@@ -10,7 +10,7 @@ pipeline {
         AWS_REGION = 'us-east-1'
         ECR_REPO_NAME = 'myapp'
         ECR_ACCOUNT_ID = '123456789012'
-        TARGET_REPO_JAR = 'my-local-repo'
+        // TARGET_REPO_JAR = 'my-local-repo'
        
     }
 
@@ -50,51 +50,7 @@ pipeline {
             }
         }
         
-        stage('Deploy to Artifactory') {
-            
-            steps {
-                script {
-                    try {
-                        def server = Artifactory.newServer url: 'http://13.232.95.58:8082/artifactory', credentialsId: 'jfrog-cred'
-                        def uploadSpec = """{
-                            "files": [
-                                {
-                                    "pattern": "target/*.jar",
-                                    "target": "${TARGET_REPO}/"
-                                }
-                            ]
-                        }"""
-                        
-                        server.upload(uploadSpec)
-                    } catch (Exception e) {
-                        error("Failed to deploy artifacts to Artifactory: ${e.message}")
-                    }
-                }
-            }
-        }
-
-         stage('Download from Artifactory') {
-            steps {
-                script {
-                    def server = Artifactory.newServer(
-                        url: "${ARTIFACTORY_URL}",
-                        credentialsId: "${ARTIFACTORY_CREDENTIALS}"
-                    )
-
-                    def downloadSpec = """{
-                        "files": [
-                            {
-                                "pattern": "${TARGET_REPO}/*.jar",
-                                "target": "target/"
-                            }
-                        ]
-                    }"""
-
-                    server.download(downloadSpec)
-                }
-            }
-        }
-        
+       
         stage('Docker  Build') {
             steps {
                
