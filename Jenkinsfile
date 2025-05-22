@@ -36,6 +36,7 @@ pipeline {
                         sh '''mvn clean verify sonar:sonar \
                         -Dsonar.projectKey=gitops-with-argocd \
                         -Dsonar.projectName='gitops-with-argocd' \
+                           '''
                 }
             }
         }
