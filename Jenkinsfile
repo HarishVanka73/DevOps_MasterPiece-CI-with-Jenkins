@@ -9,7 +9,7 @@ pipeline {
         // GIT_USER_NAME = "praveensirvi1212"
         AWS_REGION = 'us-east-1'
         ECR_REPO_NAME = 'myapp'
-        ECR_ACCOUNT_ID = '123456789012'
+        ECR_ACCOUNT_ID = '992382420802'
         // TARGET_REPO_JAR = 'my-local-repo'
        
     }
@@ -36,8 +36,6 @@ pipeline {
                         sh '''mvn clean verify sonar:sonar \
                         -Dsonar.projectKey=gitops-with-argocd \
                         -Dsonar.projectName='gitops-with-argocd' \
-                        -Dsonar.host.url=$sonarurl \
-                        -Dsonar.login=$sonarlogin'''
                 }
             }
         }
@@ -69,7 +67,7 @@ pipeline {
               steps {
                   
                 //  sh 'aws configure set aws_access_key_id "$AWS_ACCESS_KEY_ID"  && aws configure set aws_secret_access_key "$AWS_ACCESS_KEY_SECRET"  && aws configure set region ap-south-1  && aws configure set output "json"' 
-                  sh 'aws s3 cp report.html s3://devops-mastepiece/'
+                  sh 'aws s3 cp report.html s3://devops-masterpiece/'
               }
         }
         stage('Push Docker Image to ECR') {
