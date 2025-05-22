@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        NAME = "spring-appo"
+        NAME = "spring"
         VERSION = "${env.BUILD_ID}"
         // GIT_COMMIT = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
        // GIT_REPO_NAME = "DevOps_MasterPiece-CD-with-argocd"
