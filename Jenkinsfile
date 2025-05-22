@@ -79,7 +79,7 @@ pipeline {
 
                     sh """
                          aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ecrUrl}
-                         docker tag myapp:${VERSION} ${ecrUrl}:${VERSION}
+                         docker tag ${NAME}:${VERSION} ${ecrUrl}:${VERSION}
                          docker push ${ecrUrl}:${VERSION}
                        """
                }
