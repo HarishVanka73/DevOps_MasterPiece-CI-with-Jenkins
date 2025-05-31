@@ -4,6 +4,7 @@ pipeline {
     environment {
         NAME = "spring"
         VERSION = "${env.BUILD_ID}"
+        TOKEN = credentials('sonar-token')
         // GIT_COMMIT = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
        // GIT_REPO_NAME = "DevOps_MasterPiece-CD-with-argocd"
         // GIT_USER_NAME = "praveensirvi1212"
@@ -36,6 +37,7 @@ pipeline {
                         sh '''mvn clean verify sonar:sonar \
                         -Dsonar.projectKey=gitops-with-argocd \
                         -Dsonar.projectName='gitops-with-argocd' \
+                        -Dsonar.login=${TOKEN}
                            '''
                 }
             }
