@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'jenkins-agent' }
+    agent { label 'agent' }
 
     environment {
         NAME = "spring"
@@ -17,6 +17,7 @@ pipeline {
 
     tools { 
         maven 'maven-3.8.6' 
+        jdk 'JDK 17'
     }
     stages {
         stage('Checkout git') {
