@@ -26,6 +26,7 @@ pipeline {
               script {
                   def commit = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim() 
                   env.VERSION = "${BUILD_ID}-${commit}"
+              }
             }
         }
         
