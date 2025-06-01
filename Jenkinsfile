@@ -16,7 +16,7 @@ pipeline {
     }
 
     tools { 
-        maven 'maven-3.8.6' 
+        maven 'maven-3.9.9' 
         jdk 'JDK 17'
     }
     stages {
@@ -30,12 +30,18 @@ pipeline {
             }
         }
         
-        stage('Build & JUnit Test') {
+        stage('Build Test') {
             steps {
-                sh 'mvn clean install' 
+                sh 'mvn clean compile' 
             }
         }
-
+        
+        stage('JUnit Test') {
+            steps {
+                sh 'mvn clean test' 
+            }
+        }
+        
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube-server') {
@@ -50,6 +56,19 @@ pipeline {
             }
         }
 
+         stage('package') {
+            steps {
+                sh 'mvn clean package' 
+            }
+        }
+
+        stage('install') {
+            steps {
+                sh 'mvn clean install' 
+            }
+        }
+        
+
      //   stage("Quality Gate") {
        //     steps {
             //    script {
@@ -60,8 +79,7 @@ pipeline {
         
        
         stage('Docker  Build') {
-            steps {
-               
+            steps {         
       	         sh 'docker build -t ${NAME}:${VERSION} .'
                 
             }
