@@ -3,7 +3,8 @@ pipeline {
 
     environment {
         NAME = "spring"
-        VERSION = ''
+        COMMIT = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+        VERSION = "${BUILD_ID}-${COMMIT}"
         TOKEN = credentials('sonar-token')
         // GIT_COMMIT = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
        // GIT_REPO_NAME = "DevOps_MasterPiece-CD-with-argocd"
@@ -23,8 +24,7 @@ pipeline {
             steps {
               git branch: 'main', url:'https://github.com/Harishvanka73/DevOps_MasterPiece-CI-with-Jenkins.git'
               script {
-                  def commit = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim() 
-                  env.VERSION = "${BUILD_ID}-${commit}"
+                  env.VERSION = "${BUILD_ID}-${COMMIT}"
               }
             }
         }
