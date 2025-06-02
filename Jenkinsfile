@@ -19,7 +19,14 @@ pipeline {
     tools { 
         maven 'maven-3.9.6' 
     }
+    
     stages {
+        stage('Cleanws') {
+            steps {
+                sh 'cleanWs()' 
+            }
+        }
+        
         stage('Checkout git') {
             steps {
               git branch: 'main', url:'https://github.com/Harishvanka73/DevOps_MasterPiece-CI-with-Jenkins.git'
