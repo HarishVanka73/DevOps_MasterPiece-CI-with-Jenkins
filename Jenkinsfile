@@ -23,7 +23,7 @@ pipeline {
     stages {
         stage('Cleanws') {
             steps {
-                sh 'cleanWs()' 
+                cleanWs()
             }
         }
         
