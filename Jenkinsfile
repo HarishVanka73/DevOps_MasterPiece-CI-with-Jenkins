@@ -9,9 +9,9 @@ pipeline {
         // GIT_COMMIT = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
        // GIT_REPO_NAME = "DevOps_MasterPiece-CD-with-argocd"
         // GIT_USER_NAME = "praveensirvi1212"
-     //   AWS_REGION = 'us-east-1
-       // ECR_REPO_NAME = 'myapp'
-       // ECR_ACCOUNT_ID = '353234380848'
+        AWS_REGION = 'us-east-1
+        ECR_REPO_NAME = 'spring'
+        ECR_ACCOUNT_ID = '992382420802'
         // TARGET_REPO_JAR = 'my-local-repo'
        
     }
@@ -36,18 +36,6 @@ pipeline {
             }
         }
         
-        stage('Build Test') {
-            steps {
-                sh 'mvn clean compile' 
-            }
-        }
-        
-        stage('JUnit Test') {
-            steps {
-                sh 'mvn clean test' 
-            }
-        }
-        
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube-server') {
@@ -56,32 +44,21 @@ pipeline {
                         -Dsonar.projectKey='gitops-with-argocd' \
                         -Dsonar.projectName='gitops-with-argocd' \
                         -Dsonar.login=${TOKEN}
+                        -Dosnar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
                            '''
                     }
                 }
             }
         }
-
-         stage('package') {
-            steps {
-                sh 'mvn clean package' 
-            }
-        }
-
-        stage('install') {
-            steps {
-                sh 'mvn clean install' 
-            }
-        }
         
 
-     //   stage("Quality Gate") {
-       //     steps {
-            //    script {
-            //        waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token'
-            //    }
-         //   }
-     //   }
+        stage("Quality Gate") {
+            steps {
+                script {
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token'
+                }
+            }
+        }
         
        
         stage('Docker  Build') {
@@ -118,6 +95,8 @@ pipeline {
          //      }
        //     }
    //    }
+
+        
   }
 }
 
