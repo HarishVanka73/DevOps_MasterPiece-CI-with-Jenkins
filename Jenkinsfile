@@ -9,7 +9,7 @@ pipeline {
         // GIT_COMMIT = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
        // GIT_REPO_NAME = "DevOps_MasterPiece-CD-with-argocd"
         // GIT_USER_NAME = "praveensirvi1212"
-        AWS_REGION = 'us-east-1
+        AWS_REGION = 'us-east-1'
         ECR_REPO_NAME = 'spring'
         ECR_ACCOUNT_ID = '992382420802'
         // TARGET_REPO_JAR = 'my-local-repo'
