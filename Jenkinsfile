@@ -38,7 +38,7 @@ pipeline {
 
     stage('verify') {
         steps {
-            sh 'mvn verify'
+            sh 'mvn clean verify'
         }
     }    
         stage('SonarQube Analysis') {
@@ -49,7 +49,6 @@ pipeline {
                         -Dsonar.projectKey='gitops-with-argocd' \
                         -Dsonar.projectName='gitops-with-argocd' \
                         -Dsonar.login=${TOKEN}
-                       // -Dosnar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
                            '''
                     }
                 }
