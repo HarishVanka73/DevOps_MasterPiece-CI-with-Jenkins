@@ -74,7 +74,7 @@ pipeline {
 
         stage('Docker Image Scan') {
             steps {
-      	        sh ' trivy image --format html --output report.html ${NAME}:${VERSION} '
+      	        sh ' trivy image --format json --output report.html ${NAME}:${VERSION} '
             }
         }    
         
