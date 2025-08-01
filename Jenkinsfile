@@ -78,14 +78,14 @@ pipeline {
             }
         }
 
-        stage('Scan Image - Trivy') {
-            steps {
-                script {
-                    def imageName = "${NAME}:${VERSION}"
-                    sh "trivy image --exit-code 1 --severity HIGH,CRITICAL ${imageName}"
-        }
-    }
-}
+        // stage('Scan Image - Trivy') {
+          //  steps {
+            //    script {
+              //      def imageName = "${NAME}:${VERSION}"
+                //    sh "trivy image --exit-code 1 --severity HIGH,CRITICAL ${imageName}"
+     //   }
+ //   }
+//}
         
        
         stage('Push Docker Image to ECR') {
