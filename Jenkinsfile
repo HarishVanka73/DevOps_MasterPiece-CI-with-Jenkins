@@ -10,7 +10,7 @@ pipeline {
         // GIT_USER_NAME = "praveensirvi1212"
         AWS_REGION = 'us-east-1'
         ECR_REPO_NAME = 'spring'
-        ECR_ACCOUNT_ID = '992382420802'
+        ECR_ACCOUNT_ID = '837553127105'
         // TARGET_REPO_JAR = 'my-local-repo'
         MAVEN_OPTS = "Xmx2gb"
        
@@ -38,7 +38,7 @@ pipeline {
 
     stage('verify') {
         steps {
-            sh 'mvn clean verify'
+            sh 'mvn clean install'
         }
     }    
         stage('SonarQube Analysis') {
@@ -63,12 +63,6 @@ pipeline {
                 }
             }
         }
-
-        stage("package") {
-            steps {
-                sh 'mvn package'
-            }
-        }  
 
         stage("archive artifacts)" {
             steps {
@@ -109,7 +103,17 @@ pipeline {
             }
        }
 
-        
+       post {
+          success {
+             steps {
+                sh "echo 'successfully passed the job ${BUILD_NUMBER}'"  
+             }
+          }
+           failed {
+             steps {
+                 sh "echo 'failed the job ${BUILD_NUMBER}'"
+             }
+           }
   }
 }
 
