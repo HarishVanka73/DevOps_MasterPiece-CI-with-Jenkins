@@ -36,12 +36,12 @@ pipeline {
             }
         }
 
-    stage('verify') {
-        steps {
-            sh 'mvn clean install'
-        }
-    }    
-        stage('SonarQube Analysis') {
+       stage('verify') {
+          steps {
+             sh 'mvn clean install'
+          }
+       }    
+       stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube-server') {
                     withCredentials([string(credentialsId: 'sonar-token', variable: 'TOKEN')]) {
@@ -88,7 +88,7 @@ pipeline {
 //}
         
        
-        stage('Push Docker Image to ECR') {
+         stage('Push Docker Image to ECR') {
     
              steps {
                 script {
@@ -99,9 +99,9 @@ pipeline {
                          docker tag ${NAME}:${VERSION} ${ecrUrl}:${VERSION}
                          docker push ${ecrUrl}:${VERSION}
                        """
-               }
-            }
-       }
+                }
+             }
+         }
 
        post {
           success {
