@@ -103,17 +103,6 @@ pipeline {
             }
        }
 
-    post {
-        success {
-            steps {
-               sh "echo 'successfully passed the job ${BUILD_NUMBER}'"  
-            }
-        }
-        failed {
-            steps {
-                sh "echo 'failed the job ${BUILD_NUMBER}'"
-            }
-        }
-    }
+    
  }
 }
