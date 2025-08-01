@@ -64,7 +64,7 @@ pipeline {
             }
         }
 
-        stage("archive artifacts)" {
+        stage("archive artifacts") {
             steps {
                 archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
             }
