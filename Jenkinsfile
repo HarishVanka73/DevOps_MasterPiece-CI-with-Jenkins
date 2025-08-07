@@ -30,17 +30,17 @@ pipeline {
         stage('Checkout git') {
             steps {
               git branch: 'main', url:'https://github.com/Harishvanka73/DevOps_MasterPiece-CI-with-Jenkins.git'
-              script {
+                script {
                   env.VERSION = "${BUILD_ID}-${COMMIT}"
-              }
+                }  
             }
         }
 
         stage('verify') {
-           steps {
+            steps {
              sh 'mvn clean install'
-           }
-       }    
+            }
+        }     
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube-server') {
@@ -78,19 +78,19 @@ pipeline {
             }
         }
 
-        // stage('Scan Image - Trivy') {
-          //  steps {
-            //    script {
-              //      def imageName = "${NAME}:${VERSION}"
-                //    sh "trivy image --exit-code 1 --severity HIGH,CRITICAL ${imageName}"
-     //   }
- //   }
-//}
+        stage('Scan Image - Trivy') {
+            steps {
+                script {
+                     def imageName = "${NAME}:${VERSION}"
+                     sh "trivy image --exit-code 1 --severity HIGH,CRITICAL ${imageName}"
+                }
+            }
+        }
         
        
         stage('Push Docker Image to ECR') {
     
-             steps {
+            steps {
                 script {
                     def ecrUrl = "${ECR_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO_NAME}"
 
@@ -99,10 +99,11 @@ pipeline {
                          docker tag ${NAME}:${VERSION} ${ecrUrl}:${VERSION}
                          docker push ${ecrUrl}:${VERSION}
                        """
-               }
+                }
             }
-       }
+        }
 
     
- }
+    }
+    
 }
