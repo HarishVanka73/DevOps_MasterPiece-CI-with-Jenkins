@@ -6,8 +6,6 @@ pipeline {
         COMMIT = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
         VERSION = "${BUILD_ID}-${COMMIT}"
         TOKEN = credentials("sonar-token")
-        GIT_REPO_NAME = "DevOps-CD-argocd"
-        GIT_USER_NAME = "Harishvanka73"
         AWS_REGION = "us-east-1"
         ECR_REPO_NAME = "spring"
         ECR_ACCOUNT_ID = "837553127105"
@@ -109,7 +107,7 @@ pipeline {
                        cd DevOps_MasterPiece-CI-with-Jenkins
                        git config user.email "${GIT_COMMITTER_EMAIL}"
                        git config user.name "${GIT_COMMITTER_NAME}"
-                       sed -i "s/replaceImageTag/${BUILD_ID}/g" manifests/deployment.yaml
+                       sed -i "s/image:.*/${ecrUrl}:${VERSION}/g" manifests/deployment.yaml
                        git add manifests/deployment.yaml
                        git commit -m "Update deployment image to version ${BUILD_ID}" || echo "No changes to commit"
                        git push 
