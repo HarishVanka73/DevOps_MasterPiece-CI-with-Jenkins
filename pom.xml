@@ -58,24 +58,10 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
-      <groupId>org.sonarsource.scanner.maven</groupId>
-       <artifactId>sonar-maven-plugin</artifactId>
-      <version>4.0.0.4121</version> <!-- or latest -->
-      <executions>
-        <execution>
-          <goals>
-            <goal>prepare-agent</goal>
-          </goals>
-        </execution>
-        <execution>
-          <id>report</id>
-          <phase>prepare-package</phase>
-          <goals>
-            <goal>report</goal>
-          </goals>
-        </execution>
-      </executions>
-    </plugin>
+    <groupId>org.sonarsource.scanner.maven</groupId>
+    <artifactId>sonar-maven-plugin</artifactId>
+    <version>4.0.0.4121</version> <!-- Recommended stable version -->
+</plugin>
   </plugins>
 	</build>
 
