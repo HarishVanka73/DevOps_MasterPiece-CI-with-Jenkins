@@ -37,7 +37,7 @@ pipeline {
 
         stage('verify') {
             steps {
-             sh 'mvn clean install'
+             sh 'mvn clean verify'
             }
         }     
         stage('SonarQube Analysis') {
