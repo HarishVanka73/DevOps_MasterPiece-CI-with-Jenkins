@@ -101,7 +101,6 @@ pipeline {
         }
         stage('Update Deployment File') {
             steps {
-                withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
                     sh '''
                        git clone https://github.com/Harishvanka73/DevOps_MasterPiece-CI-with-Jenkins.git
                        cd DevOps_MasterPiece-CI-with-Jenkins
