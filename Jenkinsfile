@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'sample-1' }
+    agent any
 
     environment {
         NAME = "spring"
@@ -13,7 +13,8 @@ pipeline {
         ECR_ACCOUNT_ID = "837553127105"
         // TARGET_REPO_JAR = 'my-local-repo'
         MAVEN_OPTS = "Xmx2gb"
-       
+        GIT_COMMITTER_NAME = "Harishvanka73"
+        GIT_COMMITER_EMAIL = "harishvanka73@gmail.com"
     }
 
     tools { 
@@ -73,8 +74,7 @@ pipeline {
        
         stage('Docker  Build') {
             steps {         
-      	         sh 'docker build -t ${NAME}:${VERSION} .'
-                
+      	         sh 'docker build -t ${NAME}:${VERSION} .'         
             }
         }
 
@@ -105,15 +105,14 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
                     sh '''
-                       rm -rf java-app
-                       git clone https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME}.git
-                       cd ${GIT_REPO_NAME}
-                       git config user.email "kishgi1234@gmail.com"
-                       git config user.name "kishgi"
-                       sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" manifests/deployment.yaml
+                       git clone https://github.com/Harishvanka73/DevOps_MasterPiece-CI-with-Jenkins.git
+                       cd DevOps_MasterPiece-CI-with-Jenkins
+                       git config user.email "${GIT_COMMITTER_EMAIL}"
+                       git config user.name "${GIT_COMMITTER_NAME}"
+                       sed -i "s/replaceImageTag/${BUILD_ID}/g" manifests/deployment.yaml
                        git add manifests/deployment.yaml
-                       git commit -m "Update deployment image to version ${BUILD_NUMBER}" || echo "No changes to commit"
-                       git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME}.git HEAD:main
+                       git commit -m "Update deployment image to version ${BUILD_ID}" || echo "No changes to commit"
+                       git push 
                     '''
                 }
             }
