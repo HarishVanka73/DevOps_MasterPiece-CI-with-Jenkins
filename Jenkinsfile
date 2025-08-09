@@ -45,10 +45,10 @@ pipeline {
                 withSonarQubeEnv('SonarQube-server') {
                     withCredentials([string(credentialsId: 'sonar-token', variable: 'TOKEN')]) {
                         sh '''mvn sonar:sonar \
-                        -Dsonar.projectKey='gitops-with-argocd' \
-                        -Dsonar.projectName='gitops-with-argocd' \
-                        -Dsonar.login=${TOKEN}
-                        -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+                              -Dsonar.projectKey='gitops-with-argocd' \
+                              -Dsonar.projectName='gitops-with-argocd' \
+                              -Dsonar.login=${TOKEN}
+                              -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
                            '''
                     }
                 }
