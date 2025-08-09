@@ -10,7 +10,7 @@ pipeline {
         ECR_REPO_NAME = "spring"
         ECR_ACCOUNT_ID = "837553127105"
         // TARGET_REPO_JAR = 'my-local-repo'
-        MAVEN_OPTS = "Xmx2gb"
+       // MAVEN_OPTS = "Xmx2gb"
         GIT_COMMITTER_NAME = "Harishvanka73"
         GIT_COMMITER_EMAIL = "harishvanka73@gmail.com"
     }
