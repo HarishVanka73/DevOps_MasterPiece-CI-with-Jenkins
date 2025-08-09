@@ -111,11 +111,11 @@ pipeline {
                        git commit -m "Update deployment image to version ${BUILD_ID}" || echo "No changes to commit"
                        git push 
                     '''
-                }
-            }
+             }
         }
+    }
 
     
-    }
-    
 }
+    
+
