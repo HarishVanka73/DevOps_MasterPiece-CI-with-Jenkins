@@ -48,7 +48,6 @@ pipeline {
                               -Dsonar.projectKey='gitops-with-argocd' \
                               -Dsonar.projectName='gitops-with-argocd' \
                               -Dsonar.login=${TOKEN}
-                              -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
                            '''
                     }
                 }
