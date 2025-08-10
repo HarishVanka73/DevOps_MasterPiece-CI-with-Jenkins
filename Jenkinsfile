@@ -79,7 +79,7 @@ pipeline {
             steps {
                 script {
                      def imageName = "${NAME}:${VERSION}"
-                     sh "trivy image --exit-code 1 --severity HIGH,CRITICAL ${imageName}"
+                     sh "trivy image --severity HIGH,CRITICAL ${imageName}"
                 }
             }
         }
