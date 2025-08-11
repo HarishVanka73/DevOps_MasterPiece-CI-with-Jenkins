@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: spring-cont
-        image: 837553127105.dkr.ecr.us-east-1.amazonaws.com/spring:12-4cc51ef
+        image: 837553127105.dkr.ecr.us-east-1.amazonaws.com/spring:13-fdfc9c4
         ports:
         - containerPort: 8081
       imagePullSecrets:
