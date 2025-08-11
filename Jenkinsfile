@@ -110,7 +110,7 @@ pipeline {
                         git config user.email "harishvanka73@gmail.com"
 
                         # Update the deployment.yaml file
-                        sed -i 's|image:.*|image: my-app:5-1b4f2c0|' manifests/deployment.yaml
+                        sed -i 's|image:.*|image: ECR_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/ECR_REPO_NAME:VERSION|' manifests/deployment.yaml
 
                         # Commit and push changes
                         git add manifests/deployment.yaml
