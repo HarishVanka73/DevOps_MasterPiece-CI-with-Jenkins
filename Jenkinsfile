@@ -105,7 +105,7 @@ pipeline {
                        cd DevOps_MasterPiece-CI-with-Jenkins
                        git config user.email "${GIT_COMMITTER_EMAIL}"
                        git config user.name "${GIT_COMMITTER_NAME}"
-                       sed -i "s/image:.*/${ecrUrl}:${VERSION}/g" manifests/deployment.yaml
+                       sed -i "s/image:.*/image:${ecrUrl}:${VERSION}/g" manifests/deployment.yaml
                        git add manifests/deployment.yaml
                        git commit -m "Update deployment image to version ${BUILD_ID}" || echo "No changes to commit"
                        git push 
