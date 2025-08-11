@@ -102,8 +102,8 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'github-token', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
                     sh '''
                         # Clone the repo
-                        git clone https://$GIT_USER:$GIT_PASS@github.com/Harishvanka73/DevOps_MasterPiece-CI-with-Jenkins.git /tmp/temp-repo
-                        cd /tmp/temp-repo
+                        git clone https://$GIT_USER:$GIT_PASS@github.com/Harishvanka73/DevOps_MasterPiece-CI-with-Jenkins.git 
+                        cd DevOps_MasterPiece-CI-with-Jenkins
 
                         # Configure Git
                         git config user.name "$GIT_USER"
@@ -116,7 +116,6 @@ pipeline {
                         git add manifests/deployment.yaml
                         git commit -m "Update deployment image to version"
                         git push origin main
-                        rm -rf /tmp/temp-repo
                 
                    '''
                 }
