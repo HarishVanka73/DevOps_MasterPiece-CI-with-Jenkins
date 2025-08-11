@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: 837553127105.dkr.ecr.us-east-1.amazonaws.com/spring:
+        image: 837553127105.dkr.ecr.us-east-1.amazonaws.com/spring:3-a8ff32b
         ports:
         - containerPort: 8081
