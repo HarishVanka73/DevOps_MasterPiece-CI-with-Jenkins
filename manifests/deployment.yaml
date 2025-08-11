@@ -19,3 +19,5 @@ spec:
         image: ECR_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/ECR_REPO_NAME:VERSION
         ports:
         - containerPort: 8081
+      imagePullSecrets:
+      - name: workflow-secret
