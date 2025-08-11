@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: spring-cont
-        image: ECR_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/ECR_REPO_NAME:VERSION
+        image: ECR_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/ECR_REPO_NAME:
         ports:
         - containerPort: 8081
