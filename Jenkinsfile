@@ -116,7 +116,7 @@ pipeline {
                         git add manifests/deployment.yaml
                         git commit -m "Update deployment image to version"
                         git push origin main
-                        rm -rf /tmp
+                        rm -rf /tmp/temp-repo
                 
                    '''
                 }
