@@ -11,8 +11,7 @@ pipeline {
         ECR_ACCOUNT_ID = "837553127105"
         // TARGET_REPO_JAR = 'my-local-repo'
        // MAVEN_OPTS = "Xmx2gb"
-        GIT_COMMITTER_NAME = "Harishvanka73"
-        GIT_COMMITER_EMAIL = "harishvanka73@gmail.com"
+        GIT_USER = "Harishvanka73"
     }
 
     tools { 
@@ -98,23 +97,32 @@ pipeline {
                 }
             }
         }
-        stage('Update Deployment File') {
+        stage('Update Deployment Manifests') {
             steps {
+                withCredentials([usernamePassword(credentialsId: 'github-creds', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
                     sh '''
-                       git clone https://github.com/Harishvanka73/DevOps_MasterPiece-CI-with-Jenkins.git
-                       cd DevOps_MasterPiece-CI-with-Jenkins
-                       git config user.email "${GIT_COMMITTER_EMAIL}"
-                       git config user.name "${GIT_COMMITTER_NAME}"
-                       sed -i "s/image:.*/image:${ecrUrl}:${VERSION}/g" manifests/deployment.yaml
-                       git add manifests/deployment.yaml
-                       git commit -m "Update deployment image to version ${BUILD_ID}" || echo "No changes to commit"
-                       git push 
-                    '''
-             }
-        }
-    }
+                        # Clone the repo
+                        git clone https://$GIT_USER:$GIT_PASS@github.com/Harishvanka73/DevOps_MasterPiece-CI-with-Jenkins.git
+                        cd DevOps_MasterPiece-CI-with-Jenkins
 
-    
+                        # Configure Git
+                        git config user.name "$GIT_USER"
+                        git config user.email "harishvanka73@gmail.com"
+
+                        # Update the deployment.yaml file
+                        sed -i 's|image:.*|image: my-app:5-1b4f2c0|' manifests/deployment.yaml
+
+                        # Commit and push changes
+                        git add manifests/deployment.yaml
+                        git commit -m "Update deployment image to version 5"
+                        git push origin main
+                
+                   '''
+                }
+
+            }
+        }
+    }    
 }
     
 
