@@ -103,7 +103,7 @@ pipeline {
                     sh '''
                         # Clone the repo
                         git clone https://$GIT_USER:$GIT_PASS@github.com/Harishvanka73/DevOps_MasterPiece-CI-with-Jenkins.git /tmp/temp-repo
-                        cd /tmp/tep-repo
+                        cd /tmp/temp-repo
 
                         # Configure Git
                         git config user.name "$GIT_USER"
