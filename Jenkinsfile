@@ -114,7 +114,7 @@ pipeline {
 
                         # Commit and push changes
                         git add manifests/deployment.yaml
-                        git commit -m "Update deployment image to version"
+                        git commit -m "Update deployment image to ${version} [ci skip]"
                         git push origin manifest
                 
                    '''
