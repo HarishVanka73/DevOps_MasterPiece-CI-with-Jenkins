@@ -102,12 +102,12 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'github-token', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
                     sh '''
                         # Clone the repo
-                        git clone --branch manifest https://$GIT_USER:$GIT_PASS@github.com/Hadihkanka22/DevOps_MasterPiece-CI-with-Jenkins.git 
+                        git clone --branch manifest https://$GIT_USER:$GIT_PASS@github.com/Harishvanka73/DevOps_MasterPiece-CI-with-Jenkins.git 
                         cd DevOps_MasterPiece-CI-with-Jenkins
 
                         # Configure Git
                         git config user.name "$GIT_USER"
-                        git config user.email "hadihkanka22@gmail.com"
+                        git config user.email "harishvanka73@gmail.com"
 
                         # Update the deployment.yaml file
                         sed -i "s|image:.*|image: ${ECR_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/${ECR_REPO_NAME}:${VERSION}|g" manifests/deployment.yaml
