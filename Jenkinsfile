@@ -2,10 +2,8 @@ pipeline {
     agent any
 
     environment {
-        NAME = "spring"
-        COMMIT = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-        VERSION = "${BUILD_ID}-${COMMIT}"
         TOKEN = credentials("sonar-token")
+        MAVEN_OPTS = "-Dmaven.repo.local=/opt/maven/.m2/repository"
         AWS_REGION = "us-east-1"
         ECR_REPO_NAME = "spring"
         ECR_ACCOUNT_ID = "837553127105"
@@ -24,19 +22,14 @@ pipeline {
                 cleanWs()
             }
         }
-        
         stage('Checkout git') {
             steps {
-              git branch: 'main', url:'https://github.com/Harishvanka73/DevOps_MasterPiece-CI-with-Jenkins.git'
-                script {
-                  env.VERSION = "${BUILD_ID}-${COMMIT}"
-                }  
+              git branch: 'main', url:'https://github.com/Harishvanka73/DevOps_MasterPiece-CI-with-Jenkins.git'  
             }
         }
-
         stage('verify') {
             steps {
-             sh 'mvn clean install'
+             sh "mvn clean package"
             }
         }     
         stage('SonarQube Analysis') {
@@ -52,47 +45,41 @@ pipeline {
                 }
             }
         }  
-
         stage("Quality Gate") {
             steps {
                 script {
-                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token'
+                    waitForQualityGate abortPipeline: true, credentialsId: 'sonar-token'
                 }
             }
         }
-
         stage("archive artifacts") {
             steps {
                 archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
             }
-        }
-        
-       
+        }   
         stage('Docker  Build') {
-            steps {         
-      	         sh 'docker build -t ${NAME}:${VERSION} .'         
+            steps {   
+                 def ecrUrl = "${ECR_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO_NAME}"
+                 def version = "1.0.${env.BUILD_NUMBER}"
+                 def imageTag = "v${version}"
+                 env.IMAGE_NAME = "${ecrUrl}:${imageTag}"
+      	         sh "docker build -t ${env.IMAGE_NAME} ."        
             }
         }
 
         stage('Scan Image - Trivy') {
             steps {
                 script {
-                     def imageName = "${NAME}:${VERSION}"
-                     sh "trivy image --severity HIGH,CRITICAL ${imageName}"
+                     sh "trivy image --severity HIGH,CRITICAL ${env.IMAGE_NAME}"
                 }
             }
         }
-        
-       
         stage('Push Docker Image to ECR') {
             steps {
                 script {
-                    def ecrUrl = "${ECR_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO_NAME}"
-
                     sh """
                          aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ecrUrl}
-                         docker tag ${NAME}:${VERSION} ${ecrUrl}:${VERSION}
-                         docker push ${ecrUrl}:${VERSION}
+                         docker push ${env.IMAGE_NAME}
                        """
                 }
             }
