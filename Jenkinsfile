@@ -89,15 +89,15 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'github-token', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
                     sh '''
                         # Clone the repo
-                        git clone --branch dev 
-                        cd DevOps_MasterPiece-CI-with-Jenkins
+                        git clone --branch dev https://github.com/HarishVanka73/DevOps-CD-argocd.git
+                        cd DevOps-CD-argocd
 
                         # Configure Git
                         git config user.name "$GIT_USER"
                         git config user.email "harishvanka73@gmail.com"
 
                         # Update the deployment.yaml file
-                        sed -i "s|image:.*|image: ${ECR_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/${ECR_REPO_NAME}:${VERSION}|g" manifests/deployment.yaml
+                        sed -i "s|image:.*|image: ${env.IMAGE_NAME}|g" charts/workflow-service/dev/deployment.yaml
 
                         # Commit and push changes
                         git add manifests/deployment.yaml
