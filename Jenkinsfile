@@ -10,6 +10,7 @@ pipeline {
         // TARGET_REPO_JAR = 'my-local-repo'
        // MAVEN_OPTS = "Xmx2gb"
         GIT_USER = "Harishvanka73"
+        VERSION = "1.0.${BUILD_NUMBER}
     }
 
     tools { 
@@ -24,12 +25,12 @@ pipeline {
         }
         stage('Checkout git') {
             steps {
-              git branch: 'main', url:'https://github.com/Harishvanka73/DevOps_MasterPiece-CI-with-Jenkins.git'  
+              git branch: 'main', url:'https://github.com/Harishvanka73/DevOps_MasterPiece-CI-with-Jenkins.git'
             }
         }
         stage('verify') {
             steps {
-             sh "mvn clean package"
+             sh "mvn clean install -Drevision=${VERSION}"
             }
         }     
         stage('SonarQube Analysis') {
@@ -60,8 +61,7 @@ pipeline {
         stage('Docker  Build') {
             steps {   
                  def ecrUrl = "${ECR_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO_NAME}"
-                 def version = "1.0.${env.BUILD_NUMBER}"
-                 def imageTag = "v${version}"
+                 def imageTag = "v${VERSION}"
                  env.IMAGE_NAME = "${ecrUrl}:${imageTag}"
       	         sh "docker build -t ${env.IMAGE_NAME} ."        
             }
@@ -89,7 +89,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'github-token', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
                     sh '''
                         # Clone the repo
-                        git clone --branch manifest https://$GIT_USER:$GIT_PASS@github.com/Harishvanka73/DevOps_MasterPiece-CI-with-Jenkins.git 
+                        git clone --branch  https://$GIT_USER:$GIT_PASS@github.com/Harishvanka73/DevOps_MasterPiece-CI-with-Jenkins.git 
                         cd DevOps_MasterPiece-CI-with-Jenkins
 
                         # Configure Git
