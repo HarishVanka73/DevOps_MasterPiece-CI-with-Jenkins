@@ -89,7 +89,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'github-token', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
                     sh '''
                         # Clone the repo
-                        git clone --branch  https://$GIT_USER:$GIT_PASS@github.com/Harishvanka73/DevOps_MasterPiece-CI-with-Jenkins.git 
+                        git clone --branch dev 
                         cd DevOps_MasterPiece-CI-with-Jenkins
 
                         # Configure Git
