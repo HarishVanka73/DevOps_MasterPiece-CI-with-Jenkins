@@ -77,16 +77,21 @@ pipeline {
         stage('Push Docker Image to ECR') {
             steps {
                 script {
-                    sh """
+                    sh '''
                          aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ecrUrl}
                          docker push ${env.IMAGE_NAME}
-                       """
+                       '''
                 }
             }
         }
+        stage('Approval to update Dev manifests') {
+            steps {
+                input message: "Deploy ${env.IMAGE_NAME} to Dev?", ok: "Approve"
+            } 
+        }    
         stage('Update Deployment Manifests') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'github-token', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
+                //withCredentials([usernamePassword(credentialsId: 'github-token', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
                     sh '''
                         # Clone the repo
                         git clone --branch dev https://github.com/HarishVanka73/DevOps-CD-argocd.git
@@ -97,16 +102,15 @@ pipeline {
                         git config user.email "harishvanka73@gmail.com"
 
                         # Update the deployment.yaml file
-                        sed -i "s|image:.*|image: ${env.IMAGE_NAME}|g" charts/workflow-service/dev/dev-values.yaml
+                        sed -i "s|image:.*|image: ${env.IMAGE_NAME}|g" dev-values.yaml
 
                         # Commit and push changes
-                        git add charts/workflow-service/dev/dev-values.yaml
+                        git add dev-values.yaml
                         git commit -m "Update deployment image to ${env.IMAGE_NAME} [ci skip]"
                         git push origin dev
                 
                    '''
-                }
-
+                //}
             }
         }
     }    
