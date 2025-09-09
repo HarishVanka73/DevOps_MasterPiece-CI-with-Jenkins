@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { label 'my-app' }
 
     environment {
         TOKEN = credentials("sonar-token")
