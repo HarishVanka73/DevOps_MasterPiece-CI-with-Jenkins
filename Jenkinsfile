@@ -59,11 +59,13 @@ pipeline {
             }
         }   
         stage('Docker  Build') {
-            steps {   
-                 def ecrUrl = "${ECR_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO_NAME}"
-                 def imageTag = "v${VERSION}"
-                 env.IMAGE_NAME = "${ecrUrl}:${imageTag}"
-      	         sh "docker build -t ${env.IMAGE_NAME} ."        
+            steps {  
+                script {
+                    def ecrUrl = "${ECR_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO_NAME}"
+                    def imageTag = "v${VERSION}"
+                    env.IMAGE_NAME = "${ecrUrl}:${imageTag}"
+      	            sh "docker build -t ${env.IMAGE_NAME} ."   
+                }
             }
         }
 
