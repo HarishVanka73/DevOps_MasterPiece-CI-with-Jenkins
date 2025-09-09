@@ -86,6 +86,16 @@ pipeline {
                 }
             }
         }
+        stage('Approval for Deployment') {
+            steps {
+                script {
+                    timeout(time: 15, unit: 'MINUTES') {
+                        input message: "Approve deployment to DEV EKS?",
+                        ok: "Approve"
+                    }
+                }
+            }
+        }
         stage('Approval to update Dev manifests') {
             steps {
                 input message: "Deploy ${env.IMAGE_NAME} to Dev?", ok: "Approve"
