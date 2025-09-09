@@ -10,7 +10,7 @@ pipeline {
         // TARGET_REPO_JAR = 'my-local-repo'
        // MAVEN_OPTS = "Xmx2gb"
         GIT_USER = "Harishvanka73"
-        VERSION = "1.0.${BUILD_NUMBER}
+        VERSION = "1.0.${BUILD_NUMBER}"
     }
 
     tools { 
