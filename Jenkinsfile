@@ -2,12 +2,9 @@ pipeline {
     agent { label 'my-app' }
 
     environment {
-        TOKEN = credentials("sonar-token")
-        MAVEN_OPTS = "-Dmaven.repo.local=/opt/maven/.m2/repository"
         AWS_REGION = "us-east-1"
-        ECR_REPO_NAME = "spring"
+        IMAGE_REPO_NAME = "my-app"
         ECR_ACCOUNT_ID = "837553127105"
-        // TARGET_REPO_JAR = 'my-local-repo'
        // MAVEN_OPTS = "Xmx2gb"
         GIT_USER = "Harishvanka73"
         VERSION = "1.0.${BUILD_NUMBER}"
@@ -61,9 +58,9 @@ pipeline {
         stage('Docker  Build') {
             steps {  
                 script {
-                    def ecrUrl = "${ECR_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO_NAME}"
-                    def imageTag = "v${VERSION}"
-                    env.IMAGE_NAME = "${ecrUrl}:${imageTag}"
+                    env.ecrUrl = "${ECR_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+                    env.imageTag = "v${VERSION}"
+                    env.IMAGE_NAME = "${IMAGE_REPO_NAME}:${env.imageTag}"
       	            sh "docker build -t ${env.IMAGE_NAME} ."   
                 }
             }
@@ -86,7 +83,7 @@ pipeline {
                          --cache-dir /opt/trivy-cache \
                          --exit-code 0 \
                          --exit-code 1 \
-                         ${env.IMAGE_NAME}"
+                         ${env.IMAGE_NAME}
                 }
             }
         }
@@ -94,8 +91,9 @@ pipeline {
             steps {
                 script {
                     sh '''
-                         aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ecrUrl}
-                         docker push ${env.IMAGE_NAME}
+                         aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${env.ecrUrl}
+                         docker tag ${env.IMAGE_NAME} ${env.ecrUrl}/${env.IMAGE_NAME}
+                         docker push ${env.ecrUrl}/${IMAGE_NAME}
                        '''
                 }
             }
@@ -128,7 +126,7 @@ pipeline {
                         git config user.email "harishvanka73@gmail.com"
 
                         # Update the deployment.yaml file
-                        sed -i "s|image:.*|image: ${ecrUrl}:{imageTag}|g" dev/dev-values.yaml
+                        sed -i "s|image:.*|image: ${env.ecrUrl}:${imageTag}|g" dev/dev-values.yaml
 
                         # Commit and push changes
                         git add dev/dev-values.yaml
