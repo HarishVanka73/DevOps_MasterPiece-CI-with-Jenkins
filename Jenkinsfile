@@ -126,7 +126,8 @@ pipeline {
                         git config user.email "harishvanka73@gmail.com"
 
                         # Update the deployment.yaml file
-                        sed -i "s|image:.*|image: ${env.ecrUrl}:${imageTag}|g" dev/dev-values.yaml
+                        sed -i "s|repository:.*|repository: ${env.ecrUrl}/${IMAGE_REPO_NAME}|g" dev/dev-values.yaml
+                        sed -i "s|tag:.*|tag: ${env.imageTag}|g" dev/dev-values.yaml
 
                         # Commit and push changes
                         git add dev/dev-values.yaml
