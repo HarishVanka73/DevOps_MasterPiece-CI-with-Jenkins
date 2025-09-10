@@ -72,7 +72,21 @@ pipeline {
         stage('Scan Image - Trivy') {
             steps {
                 script {
-                     sh "trivy image --severity HIGH,CRITICAL ${env.IMAGE_NAME}"
+                     sh '''
+                          echo "Starting Trivy scan..."
+
+                         # Create cache dir for DB
+                         mkdir -p /opt/trivy-cache
+
+                         # Run scan with tuned options
+                         trivy image \
+                         --severity HIGH,CRITICAL \
+                         --no-progress \
+                         --timeout 10m \
+                         --cache-dir /opt/trivy-cache \
+                         --exit-code 0 \
+                         --exit-code 1 \
+                         ${env.IMAGE_NAME}"
                 }
             }
         }
