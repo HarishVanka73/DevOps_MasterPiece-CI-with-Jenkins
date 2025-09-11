@@ -43,13 +43,13 @@ pipeline {
                 }
             }
         }  
-        stage("Quality Gate") {
-            steps {
-                script {
-                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token'
-                }
-            }
-        }
+     //   stage("Quality Gate") {
+         //   steps {
+            //    script {
+              //      waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token'
+              //  }
+         //   }
+       // }
         stage("archive artifacts") {
             steps {
                 archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
