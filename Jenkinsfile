@@ -72,10 +72,10 @@ pipeline {
                      sh '''
                           echo "Starting Trivy scan..."
 
-                         # Create cache dir for DB
+                         // Create cache dir for DB
                          mkdir -p /opt/trivy-cache
 
-                         # Run scan with tuned options
+                         // Run scan with tuned options
                          trivy image \
                          --severity HIGH,CRITICAL \
                          --no-progress \
