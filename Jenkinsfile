@@ -74,7 +74,7 @@ pipeline {
 
                          # Create cache dir for DB
                          mkdir -p /opt/trivy-cache
-                         chown -R ec2-user-ec2-user /opt/trivy-cache
+                         chown -R ec2-user:ec2-user /opt/trivy-cache
 
                          # Run scan with tuned options
                          trivy image \
