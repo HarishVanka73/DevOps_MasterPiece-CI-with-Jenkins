@@ -115,7 +115,6 @@ pipeline {
         }    
         stage('Update Deployment Manifests') {
             steps {
-                //withCredentials([usernamePassword(credentialsId: 'github-token', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
                     sh """
                         // Clone the repo
                         git clone --branch dev https://github.com/HarishVanka73/DevOps-CD-argocd.git
@@ -135,7 +134,6 @@ pipeline {
                         git push origin dev
                 
                    """
-                //}
             }
         }
     }    
