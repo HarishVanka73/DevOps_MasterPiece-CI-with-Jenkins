@@ -116,7 +116,7 @@ pipeline {
         stage('Update Deployment Manifests') {
             steps {
                 //withCredentials([usernamePassword(credentialsId: 'github-token', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
-                    sh '''
+                    sh """
                         // Clone the repo
                         git clone --branch dev https://github.com/HarishVanka73/DevOps-CD-argocd.git
                         cd DevOps-CD-argocd
@@ -134,7 +134,7 @@ pipeline {
                         git commit -m "Update deployment image to ${env.IMAGE_NAME} [ci skip]"
                         git push origin dev
                 
-                   '''
+                   """
                 //}
             }
         }
