@@ -117,19 +117,19 @@ pipeline {
             steps {
                 //withCredentials([usernamePassword(credentialsId: 'github-token', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
                     sh '''
-                        # Clone the repo
+                        // Clone the repo
                         git clone --branch dev https://github.com/HarishVanka73/DevOps-CD-argocd.git
                         cd DevOps-CD-argocd
 
-                        # Configure Git
+                        // Configure Git
                         git config user.name "$GIT_USER"
                         git config user.email "harishvanka73@gmail.com"
 
-                        # Update the deployment.yaml file
+                        // Update the deployment.yaml file
                         sed -i "s|repository:.*|repository: ${env.ecrUrl}/${IMAGE_REPO_NAME}|g" dev/dev-values.yaml
                         sed -i "s|tag:.*|tag: ${env.imageTag}|g" dev/dev-values.yaml
 
-                        # Commit and push changes
+                        // Commit and push changes
                         git add dev/dev-values.yaml
                         git commit -m "Update deployment image to ${env.IMAGE_NAME} [ci skip]"
                         git push origin dev
