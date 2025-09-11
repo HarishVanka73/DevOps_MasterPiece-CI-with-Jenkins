@@ -34,11 +34,11 @@ pipeline {
             steps {
                 withSonarQubeEnv('SonarQube-server') {
                     withCredentials([string(credentialsId: 'sonar-token', variable: 'TOKEN')]) {
-                        sh '''mvn sonar:sonar \
-                              -Dsonar.projectKey='gitops-with-argocd' \
-                              -Dsonar.projectName='gitops-with-argocd' \
-                              -Dsonar.login=${TOKEN}
-                           '''
+                        sh """ mvn sonar:sonar \
+                               -Dsonar.projectKey='gitops-with-argocd' \
+                               -Dsonar.projectName='gitops-with-argocd' \
+                               -Dsonar.login=${TOKEN}
+                           """
                     }
                 }
             }
@@ -69,7 +69,7 @@ pipeline {
         stage('Scan Image - Trivy') {
             steps {
                 script {
-                     sh '''
+                     sh """
                           echo "Starting Trivy scan..."
 
                          // Create cache dir for DB
@@ -84,6 +84,7 @@ pipeline {
                          --exit-code 0 \
                          --exit-code 1 \
                          ${env.IMAGE_NAME}
+                        """
                 }
             }
         }
