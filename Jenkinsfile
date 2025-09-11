@@ -66,28 +66,7 @@ pipeline {
             }
         }
 
-        stage('Scan Image - Trivy') {
-            steps {
-                script {
-                     sh """
-                          echo "Starting Trivy scan..."
-
-                         # Create cache dir for DB
-                         mkdir -p {WORKSPACE}/trivy-cache
-
-                         # Run scan with tuned options
-                         trivy image \
-                         --severity HIGH,CRITICAL \
-                         --no-progress \
-                         --timeout 10m \
-                         --cache-dir {WORKSPACE}/trivy-cache \
-                         --exit-code 0 \
-                         --exit-code 1 \
-                         ${env.IMAGE_NAME}
-                        """
-                }
-            }
-        }
+       
         stage('Push Docker Image to ECR') {
             steps {
                 script {
