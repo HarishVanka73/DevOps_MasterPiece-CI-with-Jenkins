@@ -73,15 +73,14 @@ pipeline {
                           echo "Starting Trivy scan..."
 
                          # Create cache dir for DB
-                         mkdir -p /opt/trivy-cache
-                         chown -R ec2-user:ec2-user /opt/trivy-cache
+                         mkdir -p {WORKSPACE}/trivy-cache
 
                          # Run scan with tuned options
                          trivy image \
                          --severity HIGH,CRITICAL \
                          --no-progress \
                          --timeout 10m \
-                         --cache-dir /opt/trivy-cache \
+                         --cache-dir {WORKSPACE}/trivy-cache \
                          --exit-code 0 \
                          --exit-code 1 \
                          ${env.IMAGE_NAME}
