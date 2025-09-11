@@ -1,4 +1,4 @@
-v,pipeline {
+pipeline {
     agent { label 'my-app' }
 
     environment {
