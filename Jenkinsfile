@@ -23,6 +23,7 @@ pipeline {
         stage('Checkout Git') {
             steps {
                 git branch: 'main', url:'https://github.com/Harishvanka73/DevOps_MasterPiece-CI-with-Jenkins.git'
+                // git checkout scm
             }
         }
 
@@ -137,12 +138,8 @@ pipeline {
 
         stage('Integration Tests') {
             steps {
-                sh """
-                    # Example integration test commands
-                    echo "Running integration tests on DEV cluster..."
-                    # kubectl apply -f test-resources.yaml
-                    # ./run_integration_tests.sh
-                """
+                echo "Running integration tests against Dev environment..."
+                sh 'mvn verify -Pintegration-tests -Dbase.url=http://dev-service.dev.svc.cluster.local:8080'
             }
         }
     }    
